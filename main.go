@@ -83,17 +83,22 @@ func search(s []string) {
 	ctx := context.Background()
 	opt := &github.ListOptions{PerPage: 10}
 	// Input data
+	ver := semver.Version{}
+	if err := ver.Set(s[1]); err != nil {
+		fmt.Printf("%s has an invalid version format: %s\n", s[0], err.Error())
+		return
+	}
 	tr, v := s[0], semver.New(s[1])
 	// Checking data before searching
 	if v == nil {
-		fmt.Printf("%s has an invalid version number\n", tr)
+		fmt.Printf("%s has an invalid version format\n", tr)
 		return
 	}
 	if !strings.ContainsAny(tr, "/") {
 		fmt.Printf("%s has an invalid repo name\n", tr)
 		return
 	}
-	// Searching
+	// Searching(Existing code)
 	r := strings.Split(tr, "/")
 	releases, _, err := client.Repositories.ListReleases(ctx, r[0], r[1], opt)
 	if err != nil {
@@ -120,7 +125,7 @@ func search(s []string) {
 // as we will define a passing coding challenge as one that outputs
 // the correct information, including this line
 // 
-// Takes in one arguement as file path
+// Takes in one argument as file path
 // e.g. <code> go run main.go mock_data.txt </code>
 func main() {
 	// Opening file

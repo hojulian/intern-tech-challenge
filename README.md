@@ -1,6 +1,6 @@
 # Technical Challenge - Lalamove
 ## Tech/Infrastructure Intern
-## By Julian Ho 2018
+#### Julian Ho
 
 My attempt to Lalamove's technical challenge.
 
