@@ -22,7 +22,6 @@ import (
 // @return nothing if the minVersion doesn't exist
 func LatestVersions(releases []*semver.Version, minVersion *semver.Version) []*semver.Version {
 	var versionSlice []*semver.Version
-	var contains bool
 	// This is just an example structure of the code,
 	// if you implement this interface, the test cases
 	// in main_test.go are very easy to run
@@ -49,12 +48,9 @@ func LatestVersions(releases []*semver.Version, minVersion *semver.Version) []*s
 			// No need to check releases smaller than minVersion
 			break
 		}
-		if r.Equal(*minVersion) {
-			contains = true
-		}
 	}
 	// Check if minVersion actually exists
-	if versionSlice == nil && !contains {
+	if versionSlice == nil {
 		fmt.Printf("%s doesn't exist\n", minVersion)
 	}
 	return versionSlice
@@ -124,7 +120,7 @@ func search(s []string) {
 // Please use the format defined by the fmt.Printf line at the bottom,
 // as we will define a passing coding challenge as one that outputs
 // the correct information, including this line
-// 
+//
 // Takes in one argument as file path
 // e.g. <code> go run main.go mock_data.txt </code>
 func main() {
