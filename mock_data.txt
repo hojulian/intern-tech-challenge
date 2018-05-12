@@ -1,0 +1,7 @@
+kubernetes/kubernetes,1.8.0
+prometheus/prometheus,2.2.0
+s,1.0.0
+sada/adadad,1.0.0
+asdadasdadad adadad adadd
+coreos/etcd,1.0.0
+coreos/etcd,4.0.0
