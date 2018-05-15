@@ -11,6 +11,7 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/coreos/go-semver/semver"
 	"github.com/google/go-github/github"
@@ -124,6 +125,10 @@ func search(s []string) {
 // Takes in one argument as file path
 // e.g. <code> go run main.go mock_data.txt </code>
 func main() {
+	// Time the code
+	fmt.Println("START!")
+	start := time.Now()
+
 	// Opening file
 	file, err := os.Open(os.Args[1])
 	check(err)
@@ -139,4 +144,7 @@ func main() {
 		result := strings.Split(scanner.Text(), ",")
 		search([]string{result[0], result[1]})
 	}
+
+	// Time the code
+	fmt.Println("Finished in: ", time.Since(start))
 }
