@@ -11,10 +11,22 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"sync"
+	"time"
 
 	"github.com/coreos/go-semver/semver"
 	"github.com/google/go-github/github"
 )
+
+// Implementing sort interface
+type byVersion []*semver.Version
+
+func (v byVersion) Len() int           { return len(v) }
+func (v byVersion) Swap(i, j int)      { v[i], v[j] = v[j], v[i] }
+func (v byVersion) Less(i, j int) bool { return v[j].LessThan(*v[i]) }
+
+// Implementing sync
+var wg sync.WaitGroup
 
 // LatestVersions returns a sorted slice with the highest version
 // as its first element and the highest version of the smaller minor
@@ -56,13 +68,6 @@ func LatestVersions(releases []*semver.Version, minVersion *semver.Version) []*s
 	return versionSlice
 }
 
-// Implementing sort interface
-type byVersion []*semver.Version
-
-func (v byVersion) Len() int           { return len(v) }
-func (v byVersion) Swap(i, j int)      { v[i], v[j] = v[j], v[i] }
-func (v byVersion) Less(i, j int) bool { return v[j].LessThan(*v[i]) }
-
 // Simple error handle
 func check(e error) {
 	if e != nil {
@@ -74,6 +79,8 @@ func check(e error) {
 // Takes in the input from file
 // and print it out
 func search(s []string) {
+	// For sync
+	defer wg.Done()
 	// Github
 	client := github.NewClient(nil)
 	ctx := context.Background()
@@ -124,6 +131,10 @@ func search(s []string) {
 // Takes in one argument as file path
 // e.g. <code> go run main.go mock_data.txt </code>
 func main() {
+	// Time the code
+	fmt.Println("START!")
+	start := time.Now()
+
 	// Opening file
 	file, err := os.Open(os.Args[1])
 	check(err)
@@ -137,6 +148,11 @@ func main() {
 			continue
 		}
 		result := strings.Split(scanner.Text(), ",")
-		search([]string{result[0], result[1]})
+		wg.Add(1)
+		go search([]string{result[0], result[1]})
 	}
+	wg.Wait()
+
+	// Time the code
+	fmt.Println("Finished in: ", time.Since(start))
 }
