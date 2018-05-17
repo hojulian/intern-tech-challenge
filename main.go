@@ -84,7 +84,7 @@ func search(s []string) {
 	// Github
 	client := github.NewClient(nil)
 	ctx := context.Background()
-	opt := &github.ListOptions{PerPage: 10}
+	opt := &github.ListOptions{PerPage: 50}
 	// Input data
 	ver := semver.Version{}
 	if err := ver.Set(s[1]); err != nil {

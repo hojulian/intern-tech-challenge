@@ -5,3 +5,4 @@ sada/adadad,1.0.0
 asdadasdadad adadad adadd
 coreos/etcd,1.0.0
 coreos/etcd,11111
+nodejs/node,4.9.1
