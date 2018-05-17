@@ -74,11 +74,12 @@ func check(e error) {
 // Github searching
 // Takes in the input from file
 // and print it out
+// NOTE: only checks for the first 50 releases on github
 func search(s []string) {
 	// Github
 	client := github.NewClient(nil)
 	ctx := context.Background()
-	opt := &github.ListOptions{PerPage: 10}
+	opt := &github.ListOptions{PerPage: 50}
 	// Input data
 	ver := semver.Version{}
 	if err := ver.Set(s[1]); err != nil {
